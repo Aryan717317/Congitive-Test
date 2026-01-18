@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cognitive Research Tool - A memory and response time experiment platform">
+    <title>Cognitive Research Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- 3D Interactive Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+        <span class="theme-toggle-icon">🌙</span>
+    </button>
+
+    <!-- Navigation Progress -->
+    <nav id="nav-progress" class="nav-progress">
+        <a href="#/" class="nav-dot active" data-page="landing" title="Home">
+            <span class="nav-tooltip">Home</span>
+        </a>
+        <a href="#/study" class="nav-dot" data-page="memory-study" title="Study">
+            <span class="nav-tooltip">Study</span>
+        </a>
+        <a href="#/recall" class="nav-dot" data-page="memory-recall" title="Recall">
+            <span class="nav-tooltip">Recall</span>
+        </a>
+        <a href="#/reaction" class="nav-dot" data-page="response-time" title="Reaction">
+            <span class="nav-tooltip">Reaction</span>
+        </a>
+        <a href="#/results" class="nav-dot" data-page="results" title="Results">
+            <span class="nav-tooltip">Results</span>
+        </a>
+    </nav>
+
+    <div id="app">
+        <!-- Page 1: Landing Page -->
+        <section id="landing" class="page active" data-route="/">
+            <div class="landing-content">
+                <div class="hero-section">
+                    <div class="hero-badge">
+                        <span class="badge-icon">🔬</span>
+                        <span>Cognitive Science Research</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="title-line">Explore Your</span>
+                        <span class="title-line gradient-text">Cognitive Abilities</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        A scientifically designed experiment measuring your
+                        <strong>memory recall</strong> and <strong>reaction time</strong> capabilities.
+                    </p>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Modules</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">Minutes</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Insights</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-section">
+                    <div class="module-card" data-module="memory">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                            </div>
+                            <h3>Memory Recall</h3>
+                            <p>Memorize 10 words in 30 seconds, then recall as many as you can.</p>
+                            <div class="card-tag">Phase 1</div>
+                        </div>
+                    </div>
+
+                    <div class="module-card" data-module="reaction">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                </svg>
+                            </div>
+                            <h3>Response Time</h3>
+                            <p>Click the target as fast as possible across 5 trials.</p>
+                            <div class="card-tag">Phase 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="participant-form" class="start-form">
+                    <div class="input-wrapper">
+                        <input type="text" id="participant-id" placeholder="Enter Participant ID" required
+                            autocomplete="off">
+                        <div class="input-focus-ring"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-glow">
+                        <span>Begin Experiment</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Page 2: Memory Study -->
+        <section id="memory-study" class="page" data-route="/study">
+            <div class="container page-container">
+                <div class="page-header">
+                    <div class="page-badge">Phase 1 of 2</div>
+                    <h2 class="page-title">Memory Study</h2>
+                    <p class="page-subtitle">Memorize these words carefully</p>
+                </div>
+
+                <div class="timer-card">
+                    <div class="timer-ring">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45" />
+                            <circle id="timer-circle" class="timer-progress" cx="50" cy="50" r="45" />
+                        </svg>
+                        <div class="timer-text">
+                            <span id="study-timer" class="timer-value">30</span>
+                            <span class="timer-label">sec</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="word-grid" class="word-grid">
+                    <!-- Words injected by JS -->
+                </div>
+
+                <div class="progress-track">
+                    <div id="timer-progress" class="progress-fill"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Memory Recall -->
+        <section id="memory-recall" class="page" data-route="/recall">
+            <div class="container page-container">
+                <div class="page-header">
+                    <div class="page-badge">Recall Phase</div>
+                    <h2 class="page-title">What Do You Remember?</h2>
+                    <p class="page-subtitle">Type each word you can recall</p>
+                </div>
+
+                <div class="recall-section">
+                    <div class="recall-input-wrapper">
+                        <input type="text" id="recall-input" class="recall-input" placeholder="Type a word..."
+                            autocomplete="off">
+                        <button type="button" id="add-word-btn" class="btn btn-add">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="recall-counter">
+                        <span id="recall-count">0</span>
+                        <span class="counter-divider">/</span>
+                        <span>10</span>
+                        <span class="counter-label">words recalled</span>
+                    </div>
+
+                    <div class="recalled-words-grid" id="recalled-list">
+                        <!-- Words appear here -->
+                    </div>
+
+                    <button type="button" id="finish-recall-btn" class="btn btn-primary btn-glow btn-full">
+                        <span>Continue to Reaction Test</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 4: Response Time -->
+        <section id="response-time" class="page" data-route="/reaction">
+            <div class="rt-fullscreen">
+                <div id="rt-instructions" class="rt-screen">
+                    <div class="rt-content">
+                        <div class="page-badge">Phase 2 of 2</div>
+                        <h2 class="page-title">Reaction Test</h2>
+                        <p class="page-subtitle">Click the green circle as fast as you can!</p>
+
+                        <div class="trial-indicator">
+                            <span class="trial-current" id="current-trial">1</span>
+                            <span class="trial-divider">/</span>
+                            <span class="trial-total">5</span>
+                        </div>
+
+                        <button type="button" id="ready-btn" class="btn btn-primary btn-glow btn-large">
+                            <span>I'm Ready</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="rt-waiting" class="rt-screen hidden">
+                    <div class="waiting-pulse"></div>
+                    <p class="waiting-text">Wait for green...</p>
+                </div>
+
+                <div id="rt-stimulus" class="rt-screen hidden">
+                    <button id="stimulus-circle" class="stimulus-circle" aria-label="Click now!">
+                        <div class="stimulus-ripple"></div>
+                    </button>
+                </div>
+
+                <div id="rt-feedback" class="rt-screen hidden">
+                    <div class="feedback-result">
+                        <span class="feedback-time" id="feedback-time">0</span>
+                        <span class="feedback-unit">ms</span>
+                    </div>
+                    <div class="feedback-trial-info">
+                        <div class="trial-indicator">
+                            <span class="trial-current" id="feedback-trial">1</span>
+                            <span class="trial-divider">/</span>
+                            <span class="trial-total">5</span>
+                        </div>
+                        <p class="feedback-hint">Get ready for next...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 5: Results -->
+        <section id="results" class="page" data-route="/results">
+            <div class="container page-container results-container">
+                <div class="results-header">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <path d="M22 4L12 14.01l-3-3" />
+                        </svg>
+                    </div>
+                    <h2 class="page-title">Experiment Complete!</h2>
+                    <p class="page-subtitle">Here's how you performed</p>
+                </div>
+
+                <div class="results-cards">
+                    <div class="result-card memory-card">
+                        <div class="result-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z" />
+                                <path d="M12 6v6l4 2" />
+                            </svg>
+                        </div>
+                        <h3>Memory Score</h3>
+                        <div class="result-score">
+                            <span id="memory-score" class="score-value">0</span>
+                            <span class="score-total">/10</span>
+                        </div>
+                        <div class="result-bar">
+                            <div id="memory-bar" class="result-bar-fill"></div>
+                        </div>
+                        <p id="memory-percentage" class="result-percent">0% accuracy</p>
+                    </div>
+
+                    <div class="result-card reaction-card">
+                        <div class="result-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg>
+                        </div>
+                        <h3>Reaction Time</h3>
+                        <div class="result-score">
+                            <span id="rt-average" class="score-value">0</span>
+                            <span class="score-unit">ms</span>
+                        </div>
+                        <div class="result-bar">
+                            <div id="rt-bar" class="result-bar-fill"></div>
+                        </div>
+                        <p class="result-label">average response</p>
+                    </div>
+                </div>
+
+                <div class="trials-section">
+                    <h4>Individual Trials</h4>
+                    <div id="rt-trials-list" class="trials-grid">
+                        <!-- Trials injected by JS -->
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button type="button" id="export-btn" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7,10 12,15 17,10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span>Export JSON</span>
+                    </button>
+                    <button type="button" id="restart-btn" class="btn btn-primary btn-glow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6" />
+                            <path d="M1 20v-6h6" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
+                            <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14" />
+                        </svg>
+                        <span>Start Over</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
